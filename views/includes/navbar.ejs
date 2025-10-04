@@ -1,0 +1,87 @@
+<style>
+  .btn-search {
+    background-color: #fe424d;
+    color: #fff;
+    border-radius: 20px;
+    padding: 0 1rem 0 1rem;
+  }
+  .btn-search:hover {
+    background-color: #fe424d;
+    color: #fff;
+  }
+  .btn-search i {
+    display: inline;
+    margin-right: 0.5rem;
+  }
+  .search-input{
+     border-radius: 20px;
+     padding: 0.5rem 3rem 0.5rem 3rem;
+     font-size: 0.8;
+  }
+</style>
+
+<nav class="navbar navbar-expand-md bg-light border-bottom sticky-top">
+  <div class="container-fluid">
+    <!-- Brand -->
+    <a class="navbar-brand d-flex align-items-center fw-bold text-danger" href="/listings">
+      <i class="fa-regular fa-compass me-2"></i>
+      <span>HomiGo</span>
+    </a>
+
+    <!-- Toggler -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Navbar links -->
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <!-- Left links -->
+      <div class="navbar-nav align-items-center">
+        <a class="btn btn-danger btn-sm rounded-pill mx-1 mt-2 text-white" href="/listings"><b>Explore</b></a>
+      </div>
+      <div class="navbar-nav ms-auto">
+        <form class="d-flex" role="search">
+          <input 
+          class="form-control me-2 search-input" 
+          type="search" 
+          placeholder="Search-Destinations" />
+          <button class="btn btn-search" type="submit">
+            <i class="fa-solid fa-magnifying-glass"></i>Search
+          </button>
+        </form>
+      </div>
+
+      <!-- Right links -->
+      <div class="navbar-nav ms-auto align-items-center">
+        <a class="btn btn-danger btn-sm rounded-pill mx-1 mt-2 text-white" href="/listings/new"><b>Add New
+            Listing</b></a>
+
+        <% if(!currUser){ %>
+          <a class="btn btn-danger btn-sm rounded-pill mx-1 mt-2 text-white" href="/signup"><b>Sign Up</b></a>
+          <a class="btn btn-danger btn-sm rounded-pill mx-1 mt-2 text-white" href="/login"><b>Log In</b></a>
+          <% } %>
+
+            <% if(currUser){ %>
+              <a class="btn btn-danger btn-sm rounded-pill mx-1 mt-2 text-white" href="/logout"><b>Log Out</b></a>
+              <% } %>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- Custom CSS for hover effect -->
+<style>
+  .navbar .btn-danger {
+    transition: all 0.3s;
+  }
+
+  .navbar .btn-danger:hover,
+  .navbar .btn-danger:focus {
+    background-color: #fff !important;
+    /* white bg on hover */
+    color: #000 !important;
+    /* black text on hover */
+    border: 2px solid #dc3545 !important;
+    /* red border */
+  }
+</style>

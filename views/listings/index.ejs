@@ -1,0 +1,160 @@
+<% layout('layouts/boilerplate') %>
+
+<style>
+    .filter {
+        margin-top: 1rem;
+        opacity: 0.7;
+        transition: 0.2s;
+    }
+
+    .filter:hover {
+        opacity: 1;
+        cursor: pointer;
+        transform: scale(1.05);
+    }
+
+    .tax-toggle {
+        margin-left: 25px;        /* spacing from last filter */
+        border: 1px solid #ddd;   /* subtle border */
+        border-radius: 12px;      /* smooth edges */
+        background: #f8f9fa;      /* light bg */
+        display: flex;
+        align-items: center;
+    }
+
+    .tax-toggle .form-check-input.custom-switch {
+        transform: scale(1.3);   /* bigger switch */
+        cursor: pointer;
+    }
+
+    .tax-toggle .form-check-label {
+        margin-left: 10px;       /* spacing from switch */
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+    }
+
+    /* Responsive filter row */
+    #filters {
+        flex-wrap: wrap;
+    }
+
+    /* Card hover */
+    .listing-card {
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .listing-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .listing-link {
+        text-decoration: none;
+        color: inherit;
+    }
+
+    .tax-info{
+        display: none;
+    }
+</style>
+
+<div id="filters" class="d-flex flex-wrap align-items-center mt-4 mb-3">
+    <!-- Filter Icons Group -->
+    <div class="d-flex flex-wrap align-items-center">
+        <div class="filter d-flex flex-column align-items-center m-2">
+            <i class="fa-solid fa-fire fa-lg my-2"></i>
+            <p class="mb-0 text-center">Trending</p>
+        </div>
+        <div class="filter d-flex flex-column align-items-center m-2">
+            <i class="fa-solid fa-hotel fa-lg my-2"></i>
+            <p class="mb-0 text-center">Hotels</p>
+        </div>
+        <div class="filter d-flex flex-column align-items-center m-2">
+            <i class="fa-solid fa-house-chimney fa-lg my-2"></i>
+            <p class="mb-0 text-center">Homes</p>
+        </div>
+        <div class="filter d-flex flex-column align-items-center m-2">
+            <i class="fa-solid fa-couch fa-lg my-2"></i>
+            <p class="mb-0 text-center">Apartments</p>
+        </div>
+        <div class="filter d-flex flex-column align-items-center m-2">
+            <i class="fa-solid fa-tree fa-lg my-2"></i>
+            <p class="mb-0 text-center">Nature Stays</p>
+        </div>
+        <div class="filter d-flex flex-column align-items-center m-2">
+            <i class="fa-solid fa-umbrella-beach fa-lg my-2"></i>
+            <p class="mb-0 text-center">Beach</p>
+        </div>
+        <div class="filter d-flex flex-column align-items-center m-2">
+            <i class="fa-solid fa-mountain fa-lg my-2"></i>
+            <p class="mb-0 text-center">Mountains</p>
+        </div>
+        <div class="filter d-flex flex-column align-items-center m-2">
+            <i class="fa-solid fa-paw fa-lg my-2"></i>
+            <p class="mb-0 text-center">Pet Friendly</p>
+        </div>
+        <div class="filter d-flex flex-column align-items-center m-2">
+            <i class="fa-solid fa-people-roof fa-lg my-2"></i>
+            <p class="mb-0 text-center">Shared Rooms</p>
+        </div>
+        <div class="filter d-flex flex-column align-items-center m-2">
+            <i class="fa-brands fa-fort-awesome fa-lg my-2"></i>
+            <p class="mb-0 text-center">Castles</p>
+        </div>
+        <div class="filter d-flex flex-column align-items-center m-2">
+            <i class="fa-solid fa-gem fa-lg my-2"></i>
+            <p class="mb-0 text-center">Luxury</p>
+        </div>
+
+        <!-- Tax Toggle -->
+        <div class="tax-toggle px-3 py-2 ms-3 mt-2">
+            <div class="form-check-reversed form-switch d-flex align-items-center">
+                <input class="form-check-input custom-switch" type="checkbox" role="switch" id="switchCheckDefault">
+                <label class="form-check-label" for="switchCheckDefault">Display total after Taxes</label>
+            </div>
+        </div>
+    </div>
+</div>
+
+<hr>
+
+<div>
+    <h5><b> Available Stays in HomiGo </b></h5>
+    <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 mt-3">
+        <% for(let listing of allListings) { %>
+            <a href="/listings/<%= listing._id %>" class="listing-link">
+                <div class="card col listing-card">
+                    <img src="<%= listing.image.url %>" class="card-img-top" alt="listing-img" style="height: 20rem">
+                    <div class="card-img-overlay"></div>
+                    <div class="card-body">
+                        <p class="card-text">
+                            <b><%= listing.title %></b>
+                            <br>
+                            Price: ₹
+                            <%= (typeof listing.price==='number') 
+                                ? listing.price.toLocaleString("en-IN") 
+                                : 'N/A' %> /night
+                                <i class="tax-info"> &nbsp;&nbsp; +18% GST</i>
+                        </p>
+                    </div>
+                </div>
+            </a>
+        <% } %>
+    </div>
+</div>
+
+<script>
+    let taxSwitch = document.getElementById("switchCheckDefault");
+    taxSwitch.addEventListener("click" , ()=>{
+        let taxInfo = document.getElementsByClassName("tax-info");
+        for(info of taxInfo) {
+            if(info.style.display != "inline"){
+                info.style.display = "inline";
+            }
+            else{
+                info.style.display = "none";
+            }
+        } 
+    });
+</script>

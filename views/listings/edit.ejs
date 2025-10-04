@@ -1,0 +1,129 @@
+<% layout('layouts/boilerplate') -%>
+    <script>
+        window.mapToken = "<%= process.env.MAP_TOKEN || '' %>";
+        window.canEditListing = true; // User is on edit page, so they can edit
+    </script>
+
+    <br><br>
+    <div class="row mt-3">
+        <div class="col-12">
+            <h3 class="text-center">Edit Your Listing</h3>
+        </div>
+    </div>
+    
+    <div class="row mt-3">
+        <div class="col-lg-6">
+            <form method="POST" action="/listings/<%= listing._id %>?_method=PUT" class="needs-validation" 
+            enctype="multipart/form-data" id="edit-listing-form" novalidate>
+
+                <div class="mb-3">
+                    <label for="title" class="form-label">Title</label>
+                    <input name="listing[title]" value=" <%= listing.title %> " type="text" class="form-control" required>
+                    <div class="valid-feedback">
+                        Title Looks Good !!
+                    </div>
+                    <div class="invalid-feedback">
+                        Please provide a title.
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="description" class="form-label">Description</label>
+                    <textarea name="listing[description]" class="form-control" required><%= listing.description %></textarea>
+                    <div class="invalid-feedback">
+                        Please provide a description.
+                    </div>
+                </div>
+
+                <div>
+                    <label for="preview-image" class="form-label">Available Image : </label>
+                    <img class="card col-6 offset-3 show-card" src="<%= originalImageUrl || (listing.image && listing.image.url ? listing.image.url : listing.image) %>" alt="img" id="preview-image">
+                </div>
+
+                <div class="mb-3">
+                    <label for="image" class="form-label">New Image URL</label>
+                    <input name="listing[image]" type="file"
+                    class="form-control"
+                    >
+                </div>
+
+                <div class="row">
+                    <div class="mb-3 col-md-4">
+                        <label for="price" class="form-label">Price</label>
+                        <input name="listing[price]" value="<%= listing.price %>" type="number" class="form-control" min="0" required>
+                        <div class="invalid-feedback">
+                        Please provide a valid price
+                    </div>
+                    </div>
+
+
+                    <div class="mb-3 col-md-8">
+                        <label for="location" class="form-label">Location <small class="text-muted">(Start typing for suggestions)</small></label>
+                        <input name="listing[location]" value="<%= listing.location %>" type="text" class="form-control" required autocomplete="off">
+                        <div class="invalid-feedback">
+                            Please provide a valid location.
+                        </div>
+                        <div class="form-text">
+                            <i class="fas fa-info-circle"></i> Update the address to change the map location.
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="mb-3">
+                    <label for="country" class="form-label">Country</label>
+                    <input name="listing[country]" value="<%=  listing.country %>" type="text" class="form-control">
+                    <div class="invalid-feedback">
+                        Please provide a valid country name.
+                    </div>
+                </div>
+
+
+                <button class="btn btn-dark edit-btn mt-3">Save Listing</button>
+                
+                <br><br>
+
+            </form>
+        </div>
+        
+        <!-- Map Preview Column -->
+        <div class="col-lg-6">
+            <div class="sticky-top" style="top: 20px;">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-map-marked-alt"></i> Current Location
+                        </h5>
+                    </div>
+                    <div class="card-body p-0">
+                        <div id="map" style="height:400px; width:100%;" 
+                             data-lat="<%= listing.geometry ? listing.geometry.coordinates[1] : 20.2960 %>" 
+                             data-lon="<%= listing.geometry ? listing.geometry.coordinates[0] : 85.8246 %>">
+                        </div>
+                    </div>
+                    <div class="card-footer text-muted">
+                        <div class="d-flex flex-column gap-1">
+                            <small>
+                                <i class="fas fa-keyboard text-primary"></i> 
+                                <strong>Option 1:</strong> Update address above to change location
+                            </small>
+                            <small>
+                                <i class="fas fa-mouse-pointer text-success"></i> 
+                                <strong>Option 2:</strong> Click anywhere on the map to drop a new pin
+                            </small>
+                            <small class="text-info">
+                                <i class="fas fa-lightbulb"></i> 
+                                <em>Tip: Use map navigation to find the exact spot, then click to place pin</em>
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Include required scripts -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="/js/map.js"></script>
+    <script src="/js/address-autocomplete.js"></script>
+    <script src="/js/script.js"></script>
