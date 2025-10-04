@@ -39,7 +39,8 @@ app.use(express.static(path.join(__dirname, "/public")));
 // ----------------------------- MongoDB Connection ---------------------------
 
 const LOCAL_DB_URL = "mongodb://127.0.0.1:27017/homigo";
-const DB_URL = process.env.ATLASDB_URL || LOCAL_DB_URL;
+// const DB_URL = process.env.ATLASDB_URL || LOCAL_DB_URL;
+const DB_URL = process.env.ATLASDB_URL;
 
 async function connectDB() {
     try {
