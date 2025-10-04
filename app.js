@@ -141,9 +141,9 @@ app.get("/demouser", async (req, res) => {
 });
 
 // Main Routers
+app.use("/", userRouter);
 app.use("/listings", listingRouter);
 app.use("/listings/:id/reviews", reviewRouter);
-app.use("/", userRouter);
 
 // Catch-all Route for 404
 app.all("*", (req, res, next) => {
