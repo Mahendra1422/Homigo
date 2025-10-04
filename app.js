@@ -41,63 +41,43 @@ app.use(express.static(path.join(__dirname, "/public")));
 const LOCAL_DB_URL = "mongodb://127.0.0.1:27017/homigo";
 const DB_URL = process.env.ATLASDB_URL || LOCAL_DB_URL;
 
-async function main() {
+async function connectDB() {
     try {
         console.log("🔄 Attempting to connect to database...");
-        console.log("Database URL:", DB_URL ? "✅ Found" : "❌ Missing");
-        
+        console.log("Database URL:", DB_URL.includes("mongodb+srv") ? "🌐 Atlas" : "💻 Local");
+
         await mongoose.connect(DB_URL, {
-            serverSelectionTimeoutMS: 30000, // Increase timeout to 30 seconds
+            serverSelectionTimeoutMS: 30000,
             socketTimeoutMS: 45000,
             maxPoolSize: 10,
             minPoolSize: 1,
         });
-        
+
         console.log("✅ Database connected successfully!");
-        
-        // Add connection event listeners
-        mongoose.connection.on('error', (err) => {
-            console.error('❌ MongoDB connection error:', err);
+
+        mongoose.connection.on("error", (err) => {
+            console.error("❌ MongoDB connection error:", err);
         });
-        
-        mongoose.connection.on('disconnected', () => {
-            console.log('⚠️ MongoDB disconnected');
+
+        mongoose.connection.on("disconnected", () => {
+            console.log("⚠️ MongoDB disconnected");
         });
-        
-        mongoose.connection.on('reconnected', () => {
-            console.log('✅ MongoDB reconnected');
+
+        mongoose.connection.on("reconnected", () => {
+            console.log("✅ MongoDB reconnected");
         });
 
     } catch (err) {
         console.error("❌ Database connection error:", err.message);
-        console.log("\n🔧 Troubleshooting steps:");
-        console.log("1. Check if your IP is whitelisted in MongoDB Atlas");
-        console.log("2. Verify your database credentials");
-        console.log("3. Check your internet connection");
-        console.log("4. Try connecting with a different network");
-        
-        // Try fallback to local database if available
-        if (DB_URL !== LOCAL_DB_URL) {
-            console.log("\n🔄 Attempting fallback to local database...");
-            try {
-                await mongoose.connect(LOCAL_DB_URL, {
-                    serverSelectionTimeoutMS: 5000,
-                });
-                console.log("✅ Connected to local MongoDB!");
-            } catch (localErr) {
-                console.error("❌ Local database also failed:", localErr.message);
-            }
-        }
     }
 }
-
-main();
+connectDB();
 
 // ============================================================================
 // ----------------------------- Session Setup --------------------------------
 const store = MongoStore.create({
     mongoUrl: DB_URL,
-    crypto: { secret: process.env.SECRET },
+    crypto: { secret: process.env.SECRET || "thisshouldbeabettersecret" },
     touchAfter: 24 * 3600 // 24 hours
 });
 
@@ -121,7 +101,7 @@ app.use(session(sessionOptions));
 app.use(flash());
 
 // ============================================================================
-// ----------------------------- Passport Setup --------------------------------
+// ----------------------------- Passport Setup -------------------------------
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -130,7 +110,7 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 // ============================================================================
-// ----------------------------- Flash Messages & Current User ----------------
+// ----------------------------- Flash & Current User -------------------------
 app.use((req, res, next) => {
     res.locals.success = req.flash("success");
     res.locals.error = req.flash("error");
@@ -165,7 +145,7 @@ app.use("/listings/:id/reviews", reviewRouter);
 app.use("/", userRouter);
 
 // Catch-all Route for 404
-app.all(/.*/, (req, res, next) => {
+app.all("*", (req, res, next) => {
     next(new ExpressError(404, "Page Not Found...!!!😓"));
 });
 
@@ -180,5 +160,5 @@ app.use((err, req, res, next) => {
 // ----------------------------- Start Server ---------------------------------
 const port = process.env.PORT || 3000;
 app.listen(port, "0.0.0.0", () => {
-  console.log(`🚀 Server is listening on port ${port}`);
+    console.log(`🚀 Server is listening on port ${port}`);
 });
