@@ -145,8 +145,8 @@ app.use("/", userRouter);
 app.use("/listings", listingRouter);
 app.use("/listings/:id/reviews", reviewRouter);
 
-// Catch-all Route for 404
-app.all("*", (req, res, next) => {
+// Catch-all Route for 404 (Express 5 compatible)
+app.use((req, res, next) => {
     next(new ExpressError(404, "Page Not Found...!!!😓"));
 });
 
