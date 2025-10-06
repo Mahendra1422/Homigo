@@ -5,13 +5,13 @@
     </script>
 
     <div class="row mt-2">
-        <div class="col-8 offset-3">
+        <div class="col-12 col-md-8 offset-md-2">
             <h3>
                 <%= listing.title %>
             </h3>
         </div>
 
-        <div class="card col-6 offset-3 show-card">
+        <div class="card col-12 col-md-8 offset-md-2 show-card">
             <img src="<%= listing.image && listing.image.url ? listing.image.url : listing.image %>"
                 class="card-img-top show-img" alt="listing-img" />
             <div class="card-body">
@@ -44,11 +44,11 @@
 
 
         <% if(currUser && listing.owner && listing.owner._id.equals(currUser._id)) { %>
-            <div class="btns">
-                <button class="btn btn-dark col-1 offset-3 edit-btn"
+            <div class="btns flex-wrap gap-2">
+                <button class="btn btn-dark edit-btn"
                     onclick="location.href='/listings/<%= listing._id %>/edit'">Edit</button>
                 <form method="POST" action="/listings/<%= listing._id %>?_method=DELETE">
-                    <button class="btn btn-dark offset-4">Delete</button>
+                    <button class="btn btn-dark">Delete</button>
                 </form>
             </div>
             <% } %>
@@ -57,7 +57,7 @@
                 <hr>
                 <br>
 
-                <div class="col-8 offset-3">
+                <div class="col-12 col-md-8 offset-md-2">
                     <% if(currUser) { %>
                         <h4><b>Leave a Review ...</b></h4>
                         <form action="/listings/<%= listing._id %>/reviews" method="POST" class="needs-validation"
@@ -98,10 +98,10 @@
 
 
                             <% if(listing.reviews.length> 0) { %>
-                                <div class="row">
+                                <div class="row g-3">
                                     <p><b>All Reviews : </b></p>
                                     <% for (let review of listing.reviews) { %>
-                                        <div class="listing-ca  rd col-5 ms-3 mb-3">
+                                        <div class="listing-card col-12 col-md-5 ms-md-3 mb-3">
                                             <div class="card-body">
                                                 <h5 class="card-title">
                                                     <b>@</b>
@@ -131,10 +131,10 @@
 
                 <hr>
 
-                <div class="col-8 offset-3">
+                <div class="col-12 col-md-8 offset-md-2">
                     <h3>Where You'll Be : </h3>
                     <!-- <div id="map" style="height:400px; width:100%; border-radius:10px;"></div> -->
-                    <div id="map" style="height:400px; width:100%; border-radius:10px;"
+                    <div id="map" style="height:350px; width:100%; border-radius:10px;"
                         data-lat="<%= !listing.owner ? 28.6139 : (listing.geometry ? listing.geometry.coordinates[1] : 20.2960) %>"
                         data-lon="<%= !listing.owner ? 77.2090 : (listing.geometry ? listing.geometry.coordinates[0] : 85.8246) %>">
                     </div>

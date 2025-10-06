@@ -23,13 +23,13 @@
 <nav class="navbar navbar-expand-md bg-light border-bottom sticky-top">
   <div class="container-fluid">
     <!-- Brand -->
-    <a class="navbar-brand d-flex align-items-center fw-bold text-danger" href="/listings">
+    <a class="navbar-brand d-flex align-items-center fw-bold text-danger" href="/listings" style="font-size:1.25rem;">
       <i class="fa-regular fa-compass me-2"></i>
       <span>HomiGo</span>
     </a>
 
     <!-- Toggler -->
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
@@ -39,30 +39,30 @@
       <div class="navbar-nav align-items-center">
         <a class="btn btn-danger btn-sm rounded-pill mx-1 mt-2 text-white" href="/listings"><b>Explore</b></a>
       </div>
-      <div class="navbar-nav ms-auto">
-        <form class="d-flex" role="search">
+      <div class="navbar-nav ms-auto w-100 w-md-auto my-2 my-md-0">
+        <form class="d-flex flex-fill gap-2" role="search">
           <input 
-          class="form-control me-2 search-input" 
+          class="form-control search-input flex-fill" 
           type="search" 
-          placeholder="Search-Destinations" />
+          placeholder="Search destinations" />
           <button class="btn btn-search" type="submit">
-            <i class="fa-solid fa-magnifying-glass"></i>Search
+            <i class="fa-solid fa-magnifying-glass"></i> Search
           </button>
         </form>
       </div>
 
       <!-- Right links -->
-      <div class="navbar-nav ms-auto align-items-center">
-        <a class="btn btn-danger btn-sm rounded-pill mx-1 mt-2 text-white" href="/listings/new"><b>Add New
+      <div class="navbar-nav ms-auto align-items-center flex-wrap gap-2">
+        <a class="btn btn-danger btn-sm rounded-pill mt-2 text-white" href="/listings/new"><b>Add New
             Listing</b></a>
 
         <% if(!currUser){ %>
-          <a class="btn btn-danger btn-sm rounded-pill mx-1 mt-2 text-white" href="/signup"><b>Sign Up</b></a>
-          <a class="btn btn-danger btn-sm rounded-pill mx-1 mt-2 text-white" href="/login"><b>Log In</b></a>
+          <a class="btn btn-danger btn-sm rounded-pill mt-2 text-white" href="/signup"><b>Sign Up</b></a>
+          <a class="btn btn-danger btn-sm rounded-pill mt-2 text-white" href="/login"><b>Log In</b></a>
           <% } %>
 
             <% if(currUser){ %>
-              <a class="btn btn-danger btn-sm rounded-pill mx-1 mt-2 text-white" href="/logout"><b>Log Out</b></a>
+              <a class="btn btn-danger btn-sm rounded-pill mt-2 text-white" href="/logout"><b>Log Out</b></a>
               <% } %>
       </div>
     </div>
